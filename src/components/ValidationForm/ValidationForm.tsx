@@ -9,7 +9,8 @@ import { useState } from 'react'
 import createPost from '~/services/createPost'
 import SendDataError from '~/errors/SendDataError'
 import ErrorAlert from '~/components/ErrorAlert'
-import { useMutation, useQueryClient,  } from '@tanstack/react-query'
+import { useMutation, useQueryClient, type InfiniteData,  } from '@tanstack/react-query'
+import type ResponseInfinite from '~/types/ResponseInfinite'
 
 
 const ValidationForm = () => {
@@ -28,7 +29,26 @@ const ValidationForm = () => {
 const mutation = useMutation({
   mutationFn: createPost,
   onSuccess: ()=>{
-      queryClient.invalidateQueries({queryKey: ['posts']})  
+    let isInvalidate = false
+    queryClient.setQueryData(['posts'], (oldData: InfiniteData<ResponseInfinite, number> | undefined)=>{
+      console.log('setQueryData',oldData)
+      if (oldData){
+        const lastPageNum = oldData.pageParams[oldData.pages.length-1]
+        const lastPageIdx = lastPageNum-1
+        const lastPage = oldData.pages[lastPageIdx]
+        console.log("lastPage", lastPage, 'lastPageIdx', lastPageIdx)
+       if (lastPage.next == undefined && lastPage.pages === oldData.pages.length){
+          const pages = oldData.pages.filter((_, idx)=> idx >= lastPageIdx - 2)
+          const pageParams = oldData.pageParams.filter((_, idx)=> idx >= lastPageIdx - 2)
+          console.log("success")
+          console.log({pages: [...pages], pageParams:[...pageParams]})
+          isInvalidate = true
+          return {pages: [...pages], pageParams:[...pageParams]}
+       }
+      }
+    })
+    
+    if (isInvalidate) queryClient.invalidateQueries({queryKey: ['posts']})  
   },
   onError: (e)=>{
   console.error((e as Error).message)

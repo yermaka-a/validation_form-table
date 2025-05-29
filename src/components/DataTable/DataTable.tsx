@@ -5,13 +5,15 @@ import "./styles.scss"
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import fetchPosts from '~/services/fetchPosts';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const DataTable = () => {
   const {
     data,
     fetchNextPage,
+    fetchPreviousPage,
+    hasPreviousPage,
     hasNextPage,
     isLoading,
     isFetching,
@@ -21,16 +23,29 @@ const DataTable = () => {
     queryFn: ({pageParam}) => fetchPosts(pageParam),
     initialPageParam: 1,
     getNextPageParam:  (lastPage) => lastPage.next || undefined,
+    getPreviousPageParam: (firstPage) => firstPage.prev || undefined
   })
-
-  const { ref, inView } = useInView({
+  const prev = useInView(
+    { threshold: 0.3,}
+  )
+  const next = useInView({
     threshold: 0.3,
   });
+   const listRef = useRef<HTMLDivElement>(null)
+   useEffect(() => {
+    if (prev.inView && hasPreviousPage) {
+      fetchPreviousPage();
+       if (listRef.current) {
+        listRef.current.scrollTop += 50;
+      }
+    } 
+  }, [prev.inView, hasPreviousPage, fetchPreviousPage]);
+
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (next.inView && hasNextPage) {
       fetchNextPage();
     } 
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [next.inView, hasNextPage, fetchNextPage]);
   if (isLoading) return <Spinner animation="border" variant="primary"  className='spinner' />;
   if (error) return <div  className="alert alert-danger" style={{height: "60px", textAlign: "center"}} role="alert">{error.message}</div>;
 
@@ -38,9 +53,9 @@ const DataTable = () => {
   return (
     <Container className="table-container">
       <h2 className="mb-4 text-primary">Список Пользователей</h2>
-      <Container className="datatable">
+      <Container ref={listRef} className="datatable">
         <Table striped bordered hover variant="light" className="posts-table">
-          <thead>
+          <thead ref={prev.ref}>
             <tr>
               <th>№</th>
               <th>Email</th>
@@ -53,7 +68,7 @@ const DataTable = () => {
           <tbody >
            {data?.pages.map((page, pageIdx) => 
               page.data.map((post, idx) => {
-                const currentNumber =  (idx + 1) + (pageIdx * 5)
+                const currentNumber =  (idx + 1) + (page.next ? (page.next-2) * 5 : page?.prev ? (page.prev) * 5 : pageIdx * 5)
                return ( <tr key={post.id}>
                   <td>{currentNumber}</td>
                   <td>{post.email}</td>
@@ -65,7 +80,7 @@ const DataTable = () => {
               } 
               )  
             ) }
-            <tr ref={ref}></tr>
+            <tr ref={next.ref}></tr>
           </tbody>
         </Table>
            {isFetching && <div style={{display: "flex", justifyContent: "center", alignItems: "center"}} >
