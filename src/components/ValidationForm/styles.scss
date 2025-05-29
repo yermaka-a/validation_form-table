@@ -1,0 +1,97 @@
+.form-container {
+  padding: 30px 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(0, 0, 0, 0.05);
+  height: max-content;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #222222;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #444444;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1.8px solid #ced4da;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline-offset: 2px;
+}
+
+.form-control:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+  outline: none;
+}
+
+.error-message {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  color: #e03e2f;
+  font-weight: 600;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1.8px solid #ced4da;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+  outline: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+button {
+  background: linear-gradient(135deg, #4a90e2 0%, #357ABD 100%);
+  border: none;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(53, 122, 189, 0.4);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #357ABD 0%, #2a5f9e 100%);
+  box-shadow: 0 8px 16px rgba(42, 95, 158, 0.6);
+}
+
+button:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
