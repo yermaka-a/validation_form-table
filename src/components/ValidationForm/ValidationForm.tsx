@@ -37,7 +37,7 @@ const mutation = useMutation({
         const lastPageIdx = lastPageNum-1
         const lastPage = oldData.pages[lastPageIdx]
         console.log("lastPage", lastPage, 'lastPageIdx', lastPageIdx)
-       if (lastPage.next == undefined && lastPage.pages === oldData.pages.length){
+       if (lastPage.next == undefined && (lastPage.pages === oldData.pages.length || lastPage.pages === 0)){
           const pages = oldData.pages.filter((_, idx)=> idx >= lastPageIdx - 2)
           const pageParams = oldData.pageParams.filter((_, idx)=> idx >= lastPageIdx - 2)
           console.log("success")
