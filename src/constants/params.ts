@@ -1,0 +1,1 @@
+export const _per_page = 5
