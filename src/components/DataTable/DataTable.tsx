@@ -11,7 +11,6 @@ import { useInView } from 'react-intersection-observer';
 const DataTable = () => {
   const {
     data,
-    refetch,
     fetchNextPage,
     hasNextPage,
     isLoading,
@@ -31,8 +30,7 @@ const DataTable = () => {
     if (inView && hasNextPage) {
       fetchNextPage();
     } 
-
-  }, [inView, hasNextPage, fetchNextPage, refetch]);
+  }, [inView, hasNextPage, fetchNextPage]);
   if (isLoading) return <Spinner animation="border" variant="primary"  className='spinner' />;
   if (error) return <div  className="alert alert-danger" style={{height: "60px", textAlign: "center"}} role="alert">{error.message}</div>;
 
