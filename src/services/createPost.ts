@@ -15,7 +15,6 @@ const createPost  = async (data: Omit<Post, "id" | "created_at">) => {
             }}
         try {
             const response = await axios.post<Post>(postsUrl, payload,config)
-            console.log(response)
             return response.data
         } catch (error) {
              const axiosErr = (error as AxiosError)

@@ -15,7 +15,6 @@ const fetchPosts = async (pageParam = 1) => {
     }
   }
   const response = await axios.get<ResponseInfinite>(postsUrl,options)
-  console.log("fetchPosts", response.data)
   return response.data
 } catch(error){
   const axiosErr = error as AxiosError 
