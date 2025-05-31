@@ -1,4 +1,5 @@
 export const incorrectEmailAddress = 'Некорректный адрес электронной почты'
+export const incorrectValue = 'Некорректное значение'
 export const passMustBeMoreSixSymbols = 'Пароль должен содержать минимум 6 символов'
 export const ageMustBePositiveInteger = "Возраст должен быть положительным целым числом"
 export const fieldMustBefill = "Поле должно быть заполнено"
