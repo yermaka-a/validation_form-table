@@ -60,6 +60,7 @@ const DataTable = () => {
               <th>№</th>
               <th>Email</th>
               <th>ФИО</th>
+              <th>Пол</th>
               <th>Пароль</th>
               <th>Дата создания</th>
               <th>Возраст</th>
@@ -73,6 +74,7 @@ const DataTable = () => {
                   <td>{currentNumber}</td>
                   <td>{post.email}</td>
                   <td>{post.fio}</td>
+                   <td>{post.sex == '1' ? 'муж.' : 'жен.' }</td>
                   <td>{post.password}</td>
                   <td>{post.created_at}</td>
                   <td>{post.age}</td>
