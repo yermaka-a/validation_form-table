@@ -5,7 +5,7 @@ export default interface ResponseInfinite {
   "first": number,
   "items": number,
   "last": number,
-  "next": number,
+  "next": number | null,
   "pages": number
-  "prev": null
+  "prev": number |null
 }
