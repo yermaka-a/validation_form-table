@@ -10,7 +10,7 @@ vi.mock('~/services/createPost', () => ({
 }));
 
 describe('ValidationForm', async () => {
-  it('calls onSubmit with correct data', async () => {
+  it('calls onSubmit with correct data and checks all data are passed into createPost', async () => {
    
     const validationFormWrapper = createWrapper()
     render(validationFormWrapper(<ValidationForm />));
