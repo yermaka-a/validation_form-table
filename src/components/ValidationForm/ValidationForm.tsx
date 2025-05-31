@@ -20,9 +20,9 @@ const ValidationForm = () => {
   const {
     register,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
-  } = useForm<FormData>({
+  } = useForm({
     resolver: zodResolver(schema),
   });
 
@@ -36,12 +36,9 @@ const mutation = useMutation({
         const lastPageNum = oldData.pageParams[oldData.pages.length-1]
         const lastPageIdx = lastPageNum-1
         const lastPage = oldData.pages[lastPageIdx]
-        console.log("lastPage", lastPage, 'lastPageIdx', lastPageIdx)
        if (lastPage.next == undefined && (lastPage.pages === oldData.pages.length || lastPage.pages === 0)){
           const pages = oldData.pages.filter((_, idx)=> idx >= lastPageIdx - 2)
           const pageParams = oldData.pageParams.filter((_, idx)=> idx >= lastPageIdx - 2)
-          console.log("success")
-          console.log({pages: [...pages], pageParams:[...pageParams]})
           isInvalidate = true
           return {pages: [...pages], pageParams:[...pageParams]}
        }
@@ -58,7 +55,13 @@ const mutation = useMutation({
   },
   onSettled: ()=>{
       setLoading(false)
-      reset()
+      reset({
+        age:"",
+        email:"",
+        fio: "",
+        password:"",
+        sex:"1",
+      })
   },
   retry: 3,
   retryDelay: 1000
@@ -74,29 +77,29 @@ const mutation = useMutation({
       <h2>Добавить сотрудника</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="form-group">
-          <Form.Label>Email адрес</Form.Label>
-          <Form.Control type="email" placeholder="введите email" {...register('email', {
+          <Form.Label htmlFor='email'>Email адрес</Form.Label>
+          <Form.Control id='email' type="email" placeholder="введите email" {...register('email', {
             required: true,
           })} />
           {errors?.email && <Form.Text className="error-message">{errors.email.message}</Form.Text>}
            </Form.Group>
             <Form.Group className="form-group">
-          <Form.Label>Пароль</Form.Label>
-          <Form.Control type="password" placeholder="Введите пароль" {...register('password', {
+          <Form.Label htmlFor='pass'>Пароль</Form.Label>
+          <Form.Control id='pass' type="password" placeholder="Введите пароль" {...register('password', {
             required: true,
           })} />
           {errors?.password && <Form.Text className="error-message">{errors.password.message}</Form.Text>}
         </Form.Group>
         <Form.Group className="form-group">
-          <Form.Label>ФИО</Form.Label>
-          <Form.Control type="text" placeholder="ФИО" {...register('fio', {
+          <Form.Label htmlFor='fio'>ФИО</Form.Label>
+          <Form.Control id='fio' type="text" placeholder="ФИО" {...register('fio', {
             required: true
           })} />
             {errors?.fio && <Form.Text className="error-message">{errors.fio.message}</Form.Text>}
           </Form.Group>
            <Form.Group className="form-group">
-          <Form.Label>Возраст</Form.Label>
-          <Form.Control type="number" placeholder="Возраст" {...register('age', {
+          <Form.Label htmlFor='age'>Возраст</Form.Label>
+          <Form.Control id='age' type="number" placeholder="Возраст" {...register('age', {
             required: true
           })} />
            {errors?.age && <Form.Text className="error-message">{errors.age.message}</Form.Text>}
@@ -108,9 +111,10 @@ const mutation = useMutation({
               <option value="1">муж.</option>
               <option value="2">жен.</option>
             </Form.Select>
+             {errors?.sex && <Form.Text className="error-message">{errors.sex.message}</Form.Text>}
         </Form.Group>
         <div className="button-container">
-          <Button disabled={!isValid || loading}  variant="primary" type="submit" >
+          <Button disabled={loading}  variant="primary" type="submit" >
              {loading ? "Отправка..." : "Отправить"}
           </Button>
         </div>
